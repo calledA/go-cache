@@ -1,0 +1,19 @@
+bin/
+logs/
+target/
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.aof
+*.rdb
+
+# Test binary, build with `go test -c`
+*.test
+
+# jetbrains
+*.iml
+.idea/
