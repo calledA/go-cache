@@ -19,7 +19,7 @@ type CmdLine = [][]byte
 // DB redis风格的存储引擎
 type DB interface {
 	Exec(client redis.Connection, cmdLine [][]byte) redis.Reply
-	AfterClietnClosed(client redis.Connection)
+	AfterClientClosed(client redis.Connection)
 	Close()
 }
 

@@ -97,35 +97,18 @@ func (d *SimpleDict) ForEach(consumer Consumer) {
 	for key, value := range d.m {
 		continues := consumer(key, value)
 		if !continues {
-			return
+			break
 		}
 	}
 }
 
 func (d *SimpleDict) Keys() []string {
-	keys := make([]string, d.Len())
+	result := make([]string, d.Len())
 	i := 0
-	d.ForEach(func(key string, val interface{}) bool {
-		if i < len(keys) {
-			keys[i] = key
-			i++
-		} else {
-			keys = append(keys, key)
-		}
-		return true
-	})
-	return keys
-}
-
-func (d *SimpleDict) RandomKey() string {
-	if d == nil {
-		panic("dict is nil")
-	}
-
 	for key := range d.m {
-		return key
+		result[i] = key
 	}
-	return ""
+	return result
 }
 
 // 随机获取keys
@@ -139,10 +122,9 @@ func (d *SimpleDict) RandomKeys(limit int) []string {
 	result := make([]string, limit)
 
 	for i := 0; i < limit; {
-		key := d.RandomKey()
-		if key != "" {
+		for key := range d.m {
 			result[i] = key
-			i++
+			break
 		}
 	}
 	return result
@@ -154,22 +136,19 @@ func (d *SimpleDict) RandomDistinctKeys(limit int) []string {
 		return d.Keys()
 	}
 
-	result := make(map[string]bool)
-	for len(result) < limit {
-		key := d.RandomKey()
-		if key != "" {
-			result[key] = true
-		}
-	}
-	arr := make([]string, limit)
+	result := make([]string, size)
+
 	i := 0
-	for k := range result {
-		arr[i] = k
+	for k := range d.m {
+		if i == limit {
+			break
+		}
+		result[i] = k
 		i++
 	}
-	return arr
+	return result
 }
 
 func (d *SimpleDict) Clear() {
-	d = MakeSimpleDict()
+	*d = *MakeSimpleDict()
 }

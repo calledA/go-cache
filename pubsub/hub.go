@@ -21,7 +21,7 @@ type Hub struct {
 
 func MakeHub() *Hub {
 	return &Hub{
-		subs:      dict.MakeConcurrent(4),
+		subs:      dict.MakeConcurrentDict(4),
 		subLocker: lockmap.MakeLocks(16),
 	}
 }

@@ -102,7 +102,7 @@ func (c *Connection) Unsubscribe(channel string) {
 }
 
 // 返回subscribing的channel的数量
-func (c *Connection) SubsCount() int {
+func (c *Connection) SubCount() int {
 	return len(c.subs)
 }
 
