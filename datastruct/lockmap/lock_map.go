@@ -126,7 +126,7 @@ func (l *Locks) RUnLocks(keys ...string) {
 	}
 }
 
-func (l *Locks) RWLock(writeKeys []string, readKeys []string) {
+func (l *Locks) RWLock(writeKeys, readKeys []string) {
 	keys := append(writeKeys, readKeys...)
 	indices := l.toLockIndices(keys, false)
 	writeIndices := l.toLockIndices(writeKeys, false)
@@ -147,7 +147,7 @@ func (l *Locks) RWLock(writeKeys []string, readKeys []string) {
 	}
 }
 
-func (l *Locks) RWUnLock(writeKeys []string, readKeys []string) {
+func (l *Locks) RWUnLocks(writeKeys, readKeys []string) {
 	keys := append(writeKeys, readKeys...)
 	indices := l.toLockIndices(keys, true)
 	writeIndices := l.toLockIndices(writeKeys, true)
