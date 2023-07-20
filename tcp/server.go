@@ -3,8 +3,8 @@ package tcp
 import (
 	"context"
 	"fmt"
-	"gmr/tiny-redis/interface/tcp"
-	"gmr/tiny-redis/lib/logger"
+	"gmr/go-cache/interface/tcp"
+	"gmr/go-cache/lib/logger"
 	"net"
 	"os"
 	"os/signal"

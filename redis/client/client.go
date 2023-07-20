@@ -2,11 +2,11 @@ package client
 
 import (
 	"errors"
-	"gmr/tiny-redis/interface/redis"
-	"gmr/tiny-redis/lib/logger"
-	"gmr/tiny-redis/lib/sync/wait"
-	"gmr/tiny-redis/redis/parser"
-	"gmr/tiny-redis/redis/protocol"
+	"gmr/go-cache/interface/redis"
+	"gmr/go-cache/lib/logger"
+	"gmr/go-cache/lib/sync/wait"
+	"gmr/go-cache/redis/parser"
+	"gmr/go-cache/redis/protocol"
 	"net"
 	"strings"
 	"sync"
@@ -36,27 +36,28 @@ const (
 
 // pipeline模式的redis client
 type Client struct {
-	conn net.Conn
+	conn net.Conn // 服务端的tcp链接
 	// 全双工通信的两个channel
-	pendingReqs chan *request
-	waitingReqs chan *request
-	ticker      *time.Ticker
+	pendingReqs chan *request // 等待发送的请求
+	waitingReqs chan *request // 等待服务器响应的请求
+	ticker      *time.Ticker  // 触发心跳包的计时器
 	addr        string
 	status      int32
-	// 记录有多少未完成的连接
+	// 记录有多少未完成的连接，等待请求处理完毕后优雅关闭
 	working *sync.WaitGroup
 }
 
 // 发送到redis server的一条message
 type request struct {
-	id        uint64
-	args      [][]byte
-	reply     redis.Reply
-	heartbeat bool
-	waiting   *wait.Wait
-	err       error
+	id        uint64      // 请求id
+	args      [][]byte    // 上行参数
+	reply     redis.Reply // 收到的返回值
+	heartbeat bool        // 是否为心跳请求
+	waiting   *wait.Wait  // 使用wg等待异步请求完成
+	err       error       // 请求是否报错
 }
 
+// client构造器
 func MakeClient(addr string) (*Client, error) {
 	conn, err := net.Dial("tcp", addr)
 	if err != nil {
@@ -134,6 +135,7 @@ func (client *Client) heartbeat() {
 	}
 }
 
+// 写协程
 func (client *Client) handleWrite() {
 	for req := range client.pendingReqs {
 		client.doRequest(req)
@@ -154,8 +156,8 @@ func (client *Client) Send(args [][]byte) redis.Reply {
 	client.working.Add(1)
 	defer client.working.Done()
 
-	client.pendingReqs <- req
-	timeout := req.waiting.WaitWithTimeout(maxWait)
+	client.pendingReqs <- req                       // 等待发送队列
+	timeout := req.waiting.WaitWithTimeout(maxWait) // 设置最大等待时间
 	if timeout {
 		return protocol.MakeErrorReply("server time out")
 	}
@@ -181,14 +183,18 @@ func (client *Client) doHeartbeat() {
 	req.waiting.WaitWithTimeout(maxWait)
 }
 
+// 发送请求函数
 func (client *Client) doRequest(req *request) {
 	if req == nil || len(req.args) == 0 {
 		return
 	}
 
+	// 请求序列化
 	re := protocol.MakeMultiBulkReply(req.args)
 	bytes := re.ToBytes()
 	var err error
+
+	// 请求失败重试
 	for i := 0; i < maxRetry; i++ {
 		_, err = client.conn.Write(bytes)
 		if err != nil || (!strings.Contains(err.Error(), "timeout") && !strings.Contains(err.Error(), "deadline exceeded")) {
@@ -197,6 +203,7 @@ func (client *Client) doRequest(req *request) {
 	}
 
 	if err != nil {
+		// 发送成功后，进入等待响应队列
 		client.waitingReqs <- req
 	} else {
 		req.err = err
@@ -205,6 +212,7 @@ func (client *Client) doRequest(req *request) {
 
 }
 
+// 服务器响应
 func (client *Client) finishRequest(reply redis.Reply) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -224,6 +232,7 @@ func (client *Client) finishRequest(reply redis.Reply) {
 	}
 }
 
+// 读协程，进行RESP协议解析
 func (client *Client) handleRead() {
 	ch := parser.ParseStream(client.conn)
 	for payload := range ch {

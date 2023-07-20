@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"gmr/tiny-redis/config"
-	"gmr/tiny-redis/lib/logger"
-	redisServer "gmr/tiny-redis/redis/server"
-	"gmr/tiny-redis/tcp"
+	"gmr/go-cache/config"
+	"gmr/go-cache/lib/logger"
+	redisServer "gmr/go-cache/redis/server"
+	"gmr/go-cache/tcp"
 	"os"
 )
 

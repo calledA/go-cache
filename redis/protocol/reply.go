@@ -10,7 +10,7 @@ package protocol
 
 import (
 	"bytes"
-	"gmr/tiny-redis/interface/redis"
+	"gmr/go-cache/interface/redis"
 	"strconv"
 )
 

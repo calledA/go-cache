@@ -1,4 +1,4 @@
-module gmr/tiny-redis
+module gmr/go-cache
 
 go 1.18
 

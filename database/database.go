@@ -1,7 +1,7 @@
 package database
 
 import (
-	"gmr/tiny-redis/aof"
+	"gmr/go-cache/aof"
 	"sync/atomic"
 )
 

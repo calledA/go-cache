@@ -1,7 +1,7 @@
 package dict
 
 import (
-	"gmr/tiny-redis/lib/utils"
+	"gmr/go-cache/lib/utils"
 	"strconv"
 	"sync"
 	"testing"

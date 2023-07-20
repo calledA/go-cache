@@ -1,7 +1,7 @@
 package connection
 
 import (
-	"gmr/tiny-redis/lib/sync/wait"
+	"gmr/go-cache/lib/sync/wait"
 	"net"
 	"sync"
 	"time"

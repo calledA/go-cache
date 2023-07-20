@@ -1,7 +1,7 @@
 package database
 
 import (
-	"gmr/tiny-redis/interface/redis"
+	"gmr/go-cache/interface/redis"
 	"time"
 )
 

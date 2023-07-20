@@ -2,8 +2,8 @@ package client
 
 import (
 	"bytes"
-	"gmr/tiny-redis/lib/logger"
-	"gmr/tiny-redis/redis/protocol"
+	"gmr/go-cache/lib/logger"
+	"gmr/go-cache/redis/protocol"
 	"strconv"
 	"testing"
 	"time"

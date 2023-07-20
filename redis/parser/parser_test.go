@@ -2,9 +2,9 @@ package parser
 
 import (
 	"bytes"
-	"gmr/tiny-redis/interface/redis"
-	"gmr/tiny-redis/lib/utils"
-	"gmr/tiny-redis/redis/protocol"
+	"gmr/go-cache/interface/redis"
+	"gmr/go-cache/lib/utils"
+	"gmr/go-cache/redis/protocol"
 	"io"
 	"testing"
 )

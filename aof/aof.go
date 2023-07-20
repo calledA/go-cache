@@ -1,7 +1,7 @@
 package aof
 
 import (
-	"gmr/tiny-redis/interface/database"
+	"gmr/go-cache/interface/database"
 	"os"
 	"sync"
 )

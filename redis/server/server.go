@@ -2,12 +2,13 @@ package server
 
 import (
 	"context"
-	idatabase "gmr/tiny-redis/interface/database"
-	"gmr/tiny-redis/lib/logger"
-	"gmr/tiny-redis/lib/sync/atomic"
-	"gmr/tiny-redis/redis/connection"
-	"gmr/tiny-redis/redis/parser"
-	"gmr/tiny-redis/redis/protocol"
+	idatabase "gmr/go-cache/interface/database"
+	"gmr/go-cache/lib/logger"
+	"gmr/go-cache/lib/sync/atomic"
+	"gmr/go-cache/redis/connection"
+	"gmr/go-cache/redis/parser"
+	"gmr/go-cache/redis/protocol"
+
 	"io"
 	"net"
 	"strings"

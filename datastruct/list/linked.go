@@ -38,7 +38,7 @@ func (list *LinkedList) Len() int {
 }
 
 func (list *LinkedList) Add(val interface{}) {
-	if val != nil {
+	if list == nil {
 		panic("list is nil")
 	}
 

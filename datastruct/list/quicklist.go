@@ -23,7 +23,7 @@ type iterator struct {
 	ql     *QuickList
 }
 
-func NewQuicklist() *QuickList {
+func NewQuickList() *QuickList {
 	return &QuickList{
 		data: list.New(),
 	}
@@ -78,12 +78,16 @@ func (ql *QuickList) find(index int) *iterator {
 			n = n.Next()
 		}
 	} else {
-		page = n.Value.([]interface{})
-		pageBeg -= len(page)
-		for pageBeg < index {
-			break
+		n = ql.data.Back()
+		pageBeg = ql.size
+		for {
+			page = n.Value.([]interface{})
+			pageBeg -= len(page)
+			if pageBeg <= index {
+				break
+			}
+			n = n.Prev()
 		}
-		n = n.Prev()
 	}
 	pageOffset := index - pageBeg
 	return &iterator{

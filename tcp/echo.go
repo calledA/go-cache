@@ -3,9 +3,9 @@ package tcp
 import (
 	"bufio"
 	"context"
-	"gmr/tiny-redis/lib/logger"
-	"gmr/tiny-redis/lib/sync/atomic"
-	"gmr/tiny-redis/lib/sync/wait"
+	"gmr/go-cache/lib/logger"
+	"gmr/go-cache/lib/sync/atomic"
+	"gmr/go-cache/lib/sync/wait"
 	"io"
 	"net"
 	"sync"

@@ -2,7 +2,7 @@ package config
 
 import (
 	"bufio"
-	"gmr/tiny-redis/lib/logger"
+	"gmr/go-cache/lib/logger"
 	"io"
 	"os"
 	"reflect"

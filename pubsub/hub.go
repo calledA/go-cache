@@ -1,8 +1,8 @@
 package pubsub
 
 import (
-	"gmr/tiny-redis/datastruct/dict"
-	"gmr/tiny-redis/datastruct/lockmap"
+	"gmr/go-cache/datastruct/dict"
+	"gmr/go-cache/datastruct/lockmap"
 )
 
 /**
