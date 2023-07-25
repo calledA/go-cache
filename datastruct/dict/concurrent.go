@@ -106,7 +106,7 @@ func (d *ConcurrentDict) Len() int {
 }
 
 // 获取key的值
-func (d *ConcurrentDict) Get(key string) (val interface{}, exists bool) {
+func (d *ConcurrentDict) Get(key string) (val interface{}, exist bool) {
 	if d == nil {
 		panic("dict is nil")
 	}
@@ -116,7 +116,7 @@ func (d *ConcurrentDict) Get(key string) (val interface{}, exists bool) {
 	// defer关闭读锁
 	defer s.mutex.RUnlock()
 	// 返回找到的值和exist（bool）
-	val, exists = s.m[key]
+	val, exist = s.m[key]
 	return
 }
 
@@ -165,7 +165,7 @@ func (d *ConcurrentDict) PutIfAbsent(key string, val interface{}) (result int) {
 }
 
 // 在dict有当前key情况下再存值
-func (d *ConcurrentDict) PutIfExists(key string, val interface{}) (result int) {
+func (d *ConcurrentDict) PutIfExist(key string, val interface{}) (result int) {
 	if d == nil {
 		panic("dict is nil")
 	}

@@ -18,7 +18,7 @@ func ToCmdLine(cmd ...string) [][]byte {
 }
 
 // 将cmdName和args(string)转换成[][]byte
-func ToCmdLineByParam(cmdName string, args ...string) [][]byte {
+func ToCmdLineByString(cmdName string, args ...string) [][]byte {
 	result := make([][]byte, len(args)+1)
 	result[0] = []byte(cmdName)
 	for i, arg := range args {

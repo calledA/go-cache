@@ -14,10 +14,10 @@ type Consumer func(key string, val interface{}) bool
 // Dict key-value数据格式的interface
 type Dict interface {
 	Len() int
-	Get(key string) (val interface{}, exists bool)
+	Get(key string) (val interface{}, exist bool)
 	Put(key string, val interface{}) (result int)
 	PutIfAbsent(key string, val interface{}) (result int)
-	PutIfExists(key string, val interface{}) (result int)
+	PutIfExist(key string, val interface{}) (result int)
 	Remove(key string) (result int)
 	ForEach(consumer Consumer)
 	Keys() []string

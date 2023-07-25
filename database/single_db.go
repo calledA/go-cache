@@ -24,19 +24,19 @@ const (
 	lockerSize   = 1024
 )
 
-// 命令行参数
+// CmdLine 命令行参数
 type CmdLine = [][]byte
 
-// 命令行执行器接口
+// ExecFunc 命令行执行器接口
 type ExecFunc func(db *DB, args [][]byte) redis.Reply
 
-// 当命令中有multi时，PreFunc会分析命令，返回相关的write keys和read keys
+// PreFunc 当命令中有multi时，PreFunc会分析命令，返回相关的write keys和read keys
 type PreFunc func(args [][]byte) ([]string, []string)
 
-// 返回undo log，undo时从头到尾执行
+// UndoFunc 返回undo log，undo时从头到尾执行
 type UndoFunc func(db *DB, args [][]byte) []CmdLine
 
-// 单个DB实例
+// DB 单个DB实例
 type DB struct {
 	index int
 	// key:DataEntity
@@ -163,12 +163,12 @@ func (db *DB) GetEntity(key string) (*database.DataEntity, bool) {
 	return entity, true
 }
 
-func (db *DB) Put(key string, value *database.DataEntity) int {
+func (db *DB) PutEntity(key string, value *database.DataEntity) int {
 	return db.data.Put(key, value)
 }
 
-func (db *DB) PutIfExists(key string, value *database.DataEntity) int {
-	return db.data.PutIfExists(key, value)
+func (db *DB) PutIfExist(key string, value *database.DataEntity) int {
+	return db.data.PutIfExist(key, value)
 }
 
 func (db *DB) PutIfAbsent(key string, value *database.DataEntity) int {
@@ -185,7 +185,7 @@ func (db *DB) Remove(key string) {
 func (db *DB) Removes(keys ...string) int {
 	var deleted = 0
 	for _, key := range keys {
-		if _, exists := db.data.Get(key); exists {
+		if _, exist := db.data.Get(key); exist {
 			db.Remove(key)
 			deleted++
 		}

@@ -33,7 +33,7 @@ func main() {
 
 	configFile := os.Getenv("GO_CACHE_CONFIG")
 	if configFile == "" {
-		if fileExists("redis.conf") {
+		if fileExist("redis.conf") {
 			config.SetupConfig("redis.conf")
 		} else {
 			config.Properties = defaultProperties
@@ -50,7 +50,7 @@ func main() {
 	}
 }
 
-func fileExists(fileName string) bool {
+func fileExist(fileName string) bool {
 	info, err := os.Stat(fileName)
 	return err == nil && !info.IsDir()
 }

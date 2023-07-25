@@ -93,7 +93,7 @@ func TestConcurrentPutIfAbsent(t *testing.T) {
 	wg.Wait()
 }
 
-func TestConcurrentPutIfExists(t *testing.T) {
+func TestConcurrentPutIfExist(t *testing.T) {
 	d := MakeConcurrentDict(0)
 	count := 100
 	var wg sync.WaitGroup
@@ -103,13 +103,13 @@ func TestConcurrentPutIfExists(t *testing.T) {
 			// insert
 			key := "k" + strconv.Itoa(i)
 			// insert
-			ret := d.PutIfExists(key, i)
+			ret := d.PutIfExist(key, i)
 			if ret != 0 { // insert
 				t.Error("put test failed: expected result 0, actual: " + strconv.Itoa(ret))
 			}
 
 			d.Put(key, i)
-			d.PutIfExists(key, 10*i)
+			d.PutIfExist(key, 10*i)
 			val, ok := d.Get(key)
 			if ok {
 				intVal, _ := val.(int)

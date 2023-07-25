@@ -34,8 +34,8 @@ func (s *Set) Remove(val string) int {
 }
 
 func (s *Set) Has(val string) bool {
-	_, exists := s.dict.Get(val)
-	return exists
+	_, exist := s.dict.Get(val)
+	return exist
 }
 
 func (s *Set) Len() int {

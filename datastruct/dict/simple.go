@@ -25,12 +25,12 @@ func (d *SimpleDict) Len() int {
 	return len(d.m)
 }
 
-func (d *SimpleDict) Get(key string) (val interface{}, exists bool) {
+func (d *SimpleDict) Get(key string) (val interface{}, exist bool) {
 	if d == nil {
 		panic("dict is nil")
 	}
 
-	val, exists = d.m[key]
+	val, exist = d.m[key]
 	return
 }
 
@@ -62,7 +62,7 @@ func (d *SimpleDict) PutIfAbsent(key string, val interface{}) (result int) {
 	return 1
 }
 
-func (d *SimpleDict) PutIfExists(key string, val interface{}) (result int) {
+func (d *SimpleDict) PutIfExist(key string, val interface{}) (result int) {
 	if d == nil {
 		panic("dict is nil")
 	}

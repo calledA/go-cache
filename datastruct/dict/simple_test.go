@@ -24,18 +24,18 @@ func TestSimpleDict_Keys(t *testing.T) {
 	}
 }
 
-func TestSimpleDict_PutIfExists(t *testing.T) {
+func TestSimpleDict_PutIfExist(t *testing.T) {
 	d := MakeSimpleDict()
 	key := utils.RandString(5)
 	val := key + "1"
-	ret := d.PutIfExists(key, val)
+	ret := d.PutIfExist(key, val)
 	if ret != 0 {
 		t.Error("expect 0")
 		return
 	}
 	d.Put(key, val)
 	val = key + "2"
-	ret = d.PutIfExists(key, val)
+	ret = d.PutIfExist(key, val)
 	if ret != 1 {
 		t.Error("expect 1")
 		return
