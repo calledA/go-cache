@@ -105,6 +105,10 @@ func (r *StatusReply) ToBytes() []byte {
 	return []byte("+" + r.Status + CRLF)
 }
 
+func IsOKReply(reply redis.Reply) bool {
+	return string(reply.ToBytes()) == "+OK\r\n"
+}
+
 /*  Int reply  */
 
 type IntReply struct {
