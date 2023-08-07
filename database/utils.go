@@ -40,7 +40,7 @@ func readAllKeys(args [][]byte) ([]string, []string) {
 	return nil, keys
 }
 
-func noPrepare(args []string) ([]string, []string) {
+func noPrepare(args [][]byte) ([]string, []string) {
 	return nil, nil
 }
 

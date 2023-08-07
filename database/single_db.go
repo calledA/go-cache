@@ -91,7 +91,7 @@ func (db *DB) Exec(conn redis.Connection, cmdLine [][]byte) redis.Reply {
 		if len(cmdName) != 1 {
 			return protocol.MakeArgNumErrorReply(cmdName)
 		}
-		return ExecMulti(db, conn)
+		return execMulti(db, conn)
 	case "watch":
 		if !validateArity(-2, cmdLine) {
 			return protocol.MakeArgNumErrorReply(cmdName)

@@ -67,16 +67,16 @@ func EnqueueCmd(conn redis.Connection, cmdLine [][]byte) redis.Reply {
 	return protocol.MakeQueuedReply()
 }
 
-func execMutil(db *DB, conn redis.Connection) redis.Reply {
+func execMulti(db *DB, conn redis.Connection) redis.Reply {
 	if !conn.InMultiState() {
 		return protocol.MakeErrorReply("ERR EXEC without MULTI")
 	}
 	defer conn.SetMultiState(false)
 	line := conn.GetQueueCmdLine()
-	return db.ExecMutil(conn, conn.GetWatching(), line)
+	return db.ExecMulti(conn, conn.GetWatching(), line)
 }
 
-func (db *DB) ExecMutil(conn redis.Connection, watching map[string]uint32, cmdLines []CmdLine) redis.Reply {
+func (db *DB) ExecMulti(conn redis.Connection, watching map[string]uint32, cmdLines []CmdLine) redis.Reply {
 	writeKeys := make([]string, 0)
 	readKeys := make([]string, 0)
 

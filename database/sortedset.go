@@ -20,7 +20,7 @@ func (db *DB) getAsSortedSet(key string) (*sortedset.SortedSet, protocol.ErrorRe
 	}
 	sortedSet, ok := entity.Data.(*sortedset.SortedSet)
 	if !ok {
-		return nil, &protocol.WrongTypeErrReply{}
+		return nil, &protocol.WrongTypeErrorReply{}
 	}
 	return sortedSet, nil
 }

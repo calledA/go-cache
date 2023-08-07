@@ -20,7 +20,7 @@ type Connection interface {
 	SubCount() int
 	GetChannels() []string
 
-	// mutli 命令
+	// multi 命令
 	InMultiState() bool
 	SetMultiState(bool)
 	GetQueueCmdLine() [][][]byte

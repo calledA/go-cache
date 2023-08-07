@@ -26,7 +26,7 @@ func (db *DB) getAsDict(key string) (dict.Dict, protocol.ErrorReply) {
 	}
 	d, ok := entity.Data.(dict.Dict)
 	if !ok {
-		return nil, &protocol.WrongTypeErrReply{}
+		return nil, &protocol.WrongTypeErrorReply{}
 	}
 	return d, nil
 }

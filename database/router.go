@@ -42,5 +42,5 @@ func isReadOnlyCommand(name string) bool {
 	if cmd == nil {
 		return false
 	}
-	return cmd.flags&flagWriteOnly > 0
+	return cmd.flags&flagReadOnly > 0
 }

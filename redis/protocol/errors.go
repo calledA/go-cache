@@ -11,8 +11,8 @@ package protocol
 var (
 	theSyntaxErrorReply = new(SyntaxErrorReply)
 	unknownErrorBytes   = []byte("-Err unknown\r\r")
-	syntaxErrBytes      = []byte("-Err syntax error\r\n")
-	wrongTypeErrBytes   = []byte("-WRONGTYPE Operation against a key holding the wrong kind of value\r\n")
+	syntaxErrorBytes    = []byte("-Err syntax error\r\n")
+	wrongTypeErrorBytes = []byte("-WRONGTYPE Operation against a key holding the wrong kind of value\r\n")
 )
 
 // 未知的错误
@@ -47,7 +47,7 @@ func MakeArgNumErrorReply(cmd string) *ArgNumErrorReply {
 type SyntaxErrorReply struct{}
 
 func (r *SyntaxErrorReply) ToBytes() []byte {
-	return syntaxErrBytes
+	return syntaxErrorBytes
 }
 
 func (r *SyntaxErrorReply) Error() string {
@@ -59,25 +59,25 @@ func MakeSyntaxErrorReply() *SyntaxErrorReply {
 }
 
 // 表示对错误类型值的键的操作
-type WrongTypeErrReply struct{}
+type WrongTypeErrorReply struct{}
 
-func (w *WrongTypeErrReply) ToBytes() []byte {
-	return wrongTypeErrBytes
+func (w *WrongTypeErrorReply) ToBytes() []byte {
+	return wrongTypeErrorBytes
 }
 
-func (r *WrongTypeErrReply) Error() string {
+func (r *WrongTypeErrorReply) Error() string {
 	return "WRONGTYPE Operation against a key holding the wrong kind of value"
 }
 
 // 解析协议时遇到非期望的字节
-type ProtocolErrReply struct {
+type ProtocolErrorReply struct {
 	Msg string
 }
 
-func (r *ProtocolErrReply) ToBytes() []byte {
+func (r *ProtocolErrorReply) ToBytes() []byte {
 	return []byte("-ERR Protocol error: '" + r.Msg + "'\r\n")
 }
 
-func (r *ProtocolErrReply) Error() string {
+func (r *ProtocolErrorReply) Error() string {
 	return "ERR Protocol error: '" + r.Msg
 }
