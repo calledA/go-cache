@@ -70,7 +70,7 @@ func NewStandaloneServer() *MultiDB {
 		for _, db := range mdb.dbSet {
 			singleDB := db.Load().(*DB)
 			singleDB.addAof = func(line CmdLine) {
-				mdb.adoHandler.AddAof(singleDB.index, line)
+				mdb.aofHandler.AddAof(singleDB.index, line)
 			}
 		}
 		validAof = true
@@ -258,11 +258,11 @@ func (mdb *MultiDB) ForEach(dbIndex int, cb func(key string, data *database.Data
 }
 
 func (mdb *MultiDB) ExecMulti(conn redis.Connection, watching map[string]uint32, cmdLines []CmdLine) redis.Reply {
-	selectDB, errReply := mdb.selectDB(conn.GetDBIndex())
+	selectedDB, errReply := mdb.selectDB(conn.GetDBIndex())
 	if errReply != nil {
 		return errReply
 	}
-	return selectDB.ExecMulti(conn, watching, cmdLines)
+	return selectedDB.ExecMulti(conn, watching, cmdLines)
 }
 
 func (mdb *MultiDB) RWLocks(dbIndex int, writeKeys []string, readKeys []string) {
@@ -290,7 +290,7 @@ func BGRewriteAOF(db *MultiDB, args [][]byte) redis.Reply {
 	return protocol.MakeStatusReply("Background append only file rewriting started")
 }
 
-func Rewrite(db *MultiDB, args [][]byte) redis.Reply {
+func RewriteAOF(db *MultiDB, args [][]byte) redis.Reply {
 	err := db.aofHandler.Rewrite()
 	if err != nil {
 		return protocol.MakeErrorReply(err.Error())
@@ -302,7 +302,7 @@ func SaveRDB(db *MultiDB, args [][]byte) redis.Reply {
 	if db.aofHandler == nil {
 		return protocol.MakeErrorReply("please enable aof before using save")
 	}
-	err := db.aofHandler.Rewirte2RDB()
+	err := db.aofHandler.Rewrite2RDB()
 	if err != nil {
 		return protocol.MakeErrorReply(err.Error())
 	}

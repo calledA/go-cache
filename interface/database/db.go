@@ -19,7 +19,7 @@ type CmdLine = [][]byte
 // DB redis风格的存储引擎
 type DB interface {
 	Exec(client redis.Connection, cmdLine [][]byte) redis.Reply
-	AfterClientClosed(client redis.Connection)
+	AfterClientClose(client redis.Connection)
 	Close()
 }
 
@@ -27,11 +27,11 @@ type DB interface {
 type EmbedDB interface {
 	DB
 	ExecWithLock(client redis.Connection, cmdLine [][]byte) redis.Reply
-	ExecMulti(client redis.Connection, watching map[string]uint32, cmdLine [][]byte) redis.Reply
+	ExecMulti(client redis.Connection, watching map[string]uint32, cmdLine []CmdLine) redis.Reply
 	GetUndoLogs(dbIndex int, cmdLine [][]byte) []CmdLine
 	ForEach(dbIndex int, cb func(key string, data *DataEntity, expiration *time.Time) bool)
 	RWLocks(dbIndex int, writeKeys []string, readKeys []string)
-	RWUnlocks(dbIndex int, writeKeys []string, readKeys []string)
+	RWUnLocks(dbIndex int, writeKeys []string, readKeys []string)
 	GetDBSize(dbIndex int) (int, int)
 }
 
