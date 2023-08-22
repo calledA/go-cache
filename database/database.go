@@ -139,7 +139,7 @@ func (mdb *MultiDB) Exec(c redis.Connection, cmdLine [][]byte) (result redis.Rep
 	} else if cmdName == "publish" {
 		return pubsub.Publish(mdb.hub, cmdLine[1:])
 	} else if cmdName == "unsubscribe" {
-		return pubsub.UnSubscribe(mdb.hub, c, cmdLine[1:])
+		return pubsub.Unsubscribe(mdb.hub, c, cmdLine[1:])
 	} else if cmdName == "bgrewriteaof" {
 		return BGRewriteAOF(mdb, cmdLine[1:])
 	} else if cmdName == "rewriteaof" {
@@ -300,7 +300,7 @@ func Rewrite(db *MultiDB, args [][]byte) redis.Reply {
 
 func SaveRDB(db *MultiDB, args [][]byte) redis.Reply {
 	if db.aofHandler == nil {
-		return protocol.MakeErrReply("please enable aof before using save")
+		return protocol.MakeErrorReply("please enable aof before using save")
 	}
 	err := db.aofHandler.Rewirte2RDB()
 	if err != nil {

@@ -1,6 +1,7 @@
 package connection
 
 import (
+	"bytes"
 	"gmr/go-cache/lib/sync/wait"
 	"net"
 	"sync"
@@ -175,6 +176,11 @@ func (c *Connection) GetDBIndex() int {
 // 切换数据库
 func (c *Connection) SelectDB(dbNum int) {
 	c.selectedDB = dbNum
+}
+
+type FakeConn struct {
+	Connection
+	buf bytes.Buffer
 }
 
 // 返回当前连接的role

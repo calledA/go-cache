@@ -58,7 +58,7 @@ var negativeInfBorder = &ScoreBorder{
 	Inf: negativeInf,
 }
 
-func ParseSocreBorder(s string) (*ScoreBorder, error) {
+func ParseScoreBorder(s string) (*ScoreBorder, error) {
 	if s == "inf" || s == "+inf" {
 		return positiveInfBorder, nil
 	}

@@ -5,6 +5,7 @@ import (
 	"gmr/go-cache/datastruct/lockmap"
 	"gmr/go-cache/interface/database"
 	"gmr/go-cache/interface/redis"
+	"gmr/go-cache/lib/logger"
 	"gmr/go-cache/redis/protocol"
 	"strings"
 	"time"
@@ -178,7 +179,7 @@ func (db *DB) PutIfAbsent(key string, value *database.DataEntity) int {
 func (db *DB) Remove(key string) {
 	db.data.Remove(key)
 	db.ttlMap.Remove(key)
-	expiredTask := genExpiredTask(key)
+	expiredTask := genExpireTask(key)
 	timewheel.Cancel(expiredTask)
 }
 
@@ -207,18 +208,35 @@ func (db *DB) RWUnLocks(writeKeys, readKeys []string) {
 	db.locker.RWUnLocks(writeKeys, readKeys)
 }
 
-func genExpiredTask(key string) string {
+func genExpireTask(key string) string {
 	return "expired" + key
 }
 
-// todo: implement
 func (db *DB) Expire(key string, expire time.Time) {
-
+	db.ttlMap.Put(key, expire)
+	taskKey := genExpireTask(key)
+	timewheel.At(expire, taskKey, func() {
+		keys := []string{key}
+		db.RWLocks(keys, nil)
+		defer db.RWUnLocks(keys, nil)
+		// check-lock-check, ttl may be updated during waiting lock
+		logger.Info("expire " + key)
+		rawExpireTime, ok := db.ttlMap.Get(key)
+		if !ok {
+			return
+		}
+		expireTime, _ := rawExpireTime.(time.Time)
+		expired := time.Now().After(expireTime)
+		if expired {
+			db.Remove(key)
+		}
+	})
 }
 
-// todo: implement
 func (db *DB) Persist(key string) {
-
+	db.ttlMap.Remove(key)
+	taskKey := genExpireTask(key)
+	timewheel.Cancel(taskKey)
 }
 
 func (db *DB) IsExpired(key string) bool {
